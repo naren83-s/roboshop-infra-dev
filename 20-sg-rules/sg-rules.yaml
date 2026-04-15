@@ -1,0 +1,13 @@
+mongodb:
+- name: mongodb-bastion
+  port: 22
+  src: bastion
+  dest: mongodb
+- name: mongodb-catalogue
+  port: 27017
+  src: catalogue
+  dest: mongodb
+- name: mongodb_user
+  port: 27017
+  src: user 
+  dest: mongodb
