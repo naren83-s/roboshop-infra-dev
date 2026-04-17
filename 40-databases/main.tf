@@ -38,16 +38,16 @@ resource "terraform_data" "mongod" {
   }
 }
 
-resource "aws_instance" "radis" {
+resource "aws_instance" "redis" {
   ami           = local.ami_id
   instance_type = "t3.micro"
   subnet_id = local.database_subnet_id
-  vpc_security_group_ids = [local.radis_sg_id]
+  vpc_security_group_ids = [local.redis_sg_id]
 #   iam_instance_profile = aws_iam_instance_profile.mongod.name
 
   tags = merge(
     {
-        Name = "${var.project}-${var.environment}-radis"
+        Name = "${var.project}-${var.environment}-redis"
     },
     local.common_tags
   )
@@ -56,13 +56,13 @@ resource "aws_instance" "radis" {
 
 resource "terraform_data" "redis" {
   triggers_replace = [
-    aws_instance.radis.id
+    aws_instance.redis.id
   ]
    connection {
     type     = "ssh"
     user     = "ec2-user"
     password = "DevOps321"
-    host     = aws_instance.radis.private_ip
+    host     = aws_instance.redis.private_ip
   }
     provisioner "file" {
     source      = "boostrap.sh"    # Path on local machine
@@ -73,7 +73,7 @@ resource "terraform_data" "redis" {
   provisioner "remote-exec" {
     inline = [ 
         "chmod +x /tmp/boostrap.sh",
-        "sudo sh /tmp/boostrap.sh radis"
+        "sudo sh /tmp/boostrap.sh redis"
      ]
   }
 }

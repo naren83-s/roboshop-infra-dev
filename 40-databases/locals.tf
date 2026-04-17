@@ -7,5 +7,5 @@ locals {
   }
   database_subnet_id = split(",", data.aws_ssm_parameter.database_subnet_ids.value)[0]
   mongod_sg_id = data.aws_ssm_parameter.mongod_sg_id.value
-  radis_sg_id = data.aws_ssm_parameter.radis_sg_id
+  redis_sg_id = data.aws_ssm_parameter.redis_sg_id
 }
