@@ -25,3 +25,7 @@ data "aws_ssm_parameter" "database_subnet_ids" {
 data "aws_ssm_parameter" "mongod_sg_id" {
     name = "/${var.project}/${var.environment}/mongod_sg_id"
 }
+
+data "aws_ssm_parameter" "radis_sg_id" {
+    name = "/${var.project}/${var.environment}/radis_sg_id"
+}
