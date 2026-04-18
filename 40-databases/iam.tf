@@ -8,6 +8,7 @@ resource "aws_iam_role" "mysql" {
       {
         Action = "sts:AssumeRole"
         Effect = "Allow"
+        Sid = ""
         Principal = {
           Service = "ec2.amazonaws.com"
         }
