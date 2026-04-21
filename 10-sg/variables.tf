@@ -9,7 +9,7 @@
  variable "sg_names" {
    type = list 
    default = [
-    "mongod", "redis", "rabbitmq", "mysql",
+    "mongodb", "redis", "rabbitmq", "mysql",
     "catalogue", "cart", "shipping", "user", "payment",
     "backend_alb",
     "frontend",
