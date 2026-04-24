@@ -56,22 +56,42 @@ resource "aws_ami_from_instance" "catalogue" {
   )
 }
 
-resource "aws_lb_target_group" "catalogue" {
+/* resource "aws_lb_target_group" "catalogue" {
   name     = "${var.project}-${var.environment}-catalogue"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = local.vpc_id
   deregistration_delay = 60
+
   health_check {
      healthy_threshold = 2
      interval = 10
      matcher = "200-299"
      path = "/health"
      port = 8080
-     protocol = "Http"
+     protocol = "HTTP"
      timeout = 2
      unhealthy_threshold = 3 
 
+  }
+} */
+resource "aws_lb_target_group" "catalogue" {
+  name                 = "${var.project}-${var.environment}-catalogue"
+  port                 = 8080
+  protocol             = "HTTP"
+  vpc_id               = local.vpc_id
+  deregistration_delay = 60
+  target_type          = "instance"
+
+  health_check {
+    healthy_threshold   = 2
+    interval            = 10
+    matcher             = "200-299"
+    path                = "/health"
+    port                = 8080
+    protocol            = "HTTP"
+    timeout             = 2
+    unhealthy_threshold = 3
   }
 }
 
