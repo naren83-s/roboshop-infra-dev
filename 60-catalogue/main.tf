@@ -33,7 +33,7 @@ resource "terraform_data" "catalogue" {
   provisioner "remote-exec" {
     inline = [ 
         "chmod +x /tmp/boostrap.sh",
-        "sudo sh /tmp/boostrap.sh catalogue dev"
+        "sudo sh /tmp/boostrap.sh catalogue ${var.environment} ${var.app_version}"
      ]
   }
 }
@@ -45,7 +45,7 @@ resource "aws_ec2_instance_state" "catalogue" {
 }
 
 resource "aws_ami_from_instance" "catalogue" {
-  name               = "${var.project}-${var.environment}-catalogue"
+  name               = "${var.project}-${var.environment}-catalogue-${var.app_version}-${aws_instance.catalogue.id}"
   source_instance_id = aws_instance.catalogue.id
   depends_on = [ aws_ec2_instance_state.catalogue ]
   tags = merge(
@@ -75,25 +75,6 @@ resource "aws_lb_target_group" "catalogue" {
 
   }
 }
-/* resource "aws_lb_target_group" "catalogue" {
-  name                 = "${var.project}-${var.environment}-catalogue"
-  port                 = 8080
-  protocol             = "HTTP"
-  vpc_id               = local.vpc_id
-  deregistration_delay = 60
-  target_type          = "instance"
-
-  health_check {
-    healthy_threshold   = 2
-    interval            = 10
-    matcher             = "200-299"
-    path                = "/health"
-    port                = 8080
-    protocol            = "HTTP"
-    timeout             = 2
-    unhealthy_threshold = 3
-  }
-} */
 
 resource "aws_launch_template" "catalogue" {
   name = "${var.project}-${var.environment}-catalogue"
