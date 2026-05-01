@@ -25,15 +25,15 @@ resource "terraform_data" "catalogue" {
     host     = aws_instance.catalogue.private_ip
   }
     provisioner "file" {
-    source      = "boostrap.sh"    # Path on local machine
-    destination = "/tmp/boostrap.sh"   # Path on remote machine
+    source      = "bootstrap.sh"    # Path on local machine
+    destination = "/tmp/bootstrap.sh"   # Path on remote machine
   }
 
 
   provisioner "remote-exec" {
     inline = [ 
-        "chmod +x /tmp/boostrap.sh",
-        "sudo sh /tmp/boostrap.sh catalogue ${var.environment} ${var.app_version}"
+        "chmod +x /tmp/bootstrap.sh",
+        "sudo sh /tmp/bootstrap.sh catalogue ${var.environment} ${var.app_version}"
      ]
   }
 }
